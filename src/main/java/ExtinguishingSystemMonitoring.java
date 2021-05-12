@@ -3,14 +3,21 @@ import java.util.ArrayList;
 public class ExtinguishingSystemMonitoring {
 
     ExtinguishingSystem extinguishingSystem;
-    ArrayList<Actions> actions = new ArrayList<Actions>();
+    ArrayList<Actions> actions = new ArrayList<>();
     int currentStatus = 0;
+    MonitoringSystems monitoredSystem;
+    UserGroups currentUser;
 
-    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem) {
+    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem, UserGroups currentUser, MonitoringSystems monitoredSystem) {
         this.extinguishingSystem = extinguishingSystem;
+        this.currentUser = currentUser;
+        this.monitoredSystem = monitoredSystem;
     }
 
     public void checkCurrentPressure() {
+        if (!currentUserIsAllowedToCheck()){
+            return;
+        }
         int currentPressure = extinguishingSystem.getCurrentPressure();
         if (currentPressure < 50) {
             actions.add(Actions.ACOUSTIC_SIGNAL);
@@ -42,6 +49,16 @@ public class ExtinguishingSystemMonitoring {
             clearActions();
             currentStatus = 0;
         }
+    }
+
+    private boolean currentUserIsAllowedToCheck() {
+        if (currentUser != UserGroups.WORKER){
+            if(currentUser == UserGroups.MAINTENANCE && monitoredSystem == MonitoringSystems.VALVECONTROL){
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
 
     private void checkStatusChange(int newStatus) {
