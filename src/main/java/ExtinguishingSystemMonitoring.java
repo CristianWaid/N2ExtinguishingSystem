@@ -44,7 +44,7 @@ public class ExtinguishingSystemMonitoring {
         }
     }
 
-    public void checkStatusChange(int newStatus) {
+    private void checkStatusChange(int newStatus) {
         if (currentStatus != newStatus) {
             actions.add(Actions.LOG_DATA);
         }
