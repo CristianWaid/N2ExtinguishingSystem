@@ -5,12 +5,9 @@ public class ExtinguishingSystemMonitoring {
     ExtinguishingSystem extinguishingSystem;
     ArrayList<Actions> actions = new ArrayList<>();
     int currentStatus = 0;
-    MonitoringSystems monitoredSystem;
-    UserGroups currentUser;
 
-    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem, UserGroups currentUser) {
+    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem) {
         this.extinguishingSystem = extinguishingSystem;
-        this.currentUser = currentUser;
     }
 
     public void checkCurrentPressure() {
@@ -50,7 +47,20 @@ public class ExtinguishingSystemMonitoring {
         }
     }
 
+    public void checkValveControlStatus(){
+        if (!currentUserIsAllowedToCheck(MonitoringSystems.VALVECONTROL)){
+            return;
+        }
+        if(extinguishingSystem.getValveStatus() == ValveStatus.WORKING){
+            actions.add(Actions.SHOW_VALUE);
+        } else{
+            actions.add(Actions.SHOW_ERROR);
+        }
+        actions.add(Actions.LOG_DATA);
+    }
+
     private boolean currentUserIsAllowedToCheck(MonitoringSystems monitoredSystem) {
+        var currentUser = extinguishingSystem.getCurrentUserGroup();
         if (currentUser != UserGroups.WORKER){
             if(currentUser == UserGroups.MAINTENANCE && monitoredSystem == MonitoringSystems.VALVECONTROL){
                 return false;

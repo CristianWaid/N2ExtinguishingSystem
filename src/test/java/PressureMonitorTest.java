@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PressureMonitorTest {
 
-    ExtinguishingSystem extinguishingSystem = new ExtinguishingSystem(0, 6);
-    ExtinguishingSystemMonitoring extinguishingSystemMonitoring = new ExtinguishingSystemMonitoring(extinguishingSystem, UserGroups.MANAGER);
+    ExtinguishingSystem extinguishingSystem = new ExtinguishingSystem(0, 6, UserGroups.MANAGER, ValveStatus.WORKING);
+    ExtinguishingSystemMonitoring extinguishingSystemMonitoring = new ExtinguishingSystemMonitoring(extinguishingSystem);
 
     @ParameterizedTest
     @ValueSource(ints = {49, 50, 51, 179, 180, 181, 219, 220, 221, 299, 300, 301, 499, 500, 501})

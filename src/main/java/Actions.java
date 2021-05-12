@@ -4,5 +4,7 @@ public enum Actions {
     NOTIFICATION_MAINTENANCE,
     TRIGGER_ALARM,
     START_EVACUATION,
-    LOG_DATA
+    LOG_DATA,
+    SHOW_VALUE,
+    SHOW_ERROR
 }
