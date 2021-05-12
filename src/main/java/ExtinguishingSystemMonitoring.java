@@ -11,7 +11,7 @@ public class ExtinguishingSystemMonitoring {
     }
 
     public void checkCurrentPressure() {
-        if (!currentUserIsAllowedToCheck(MonitoringSystems.PRESSURE)){
+        if (!currentUserIsAllowedToCheck(MonitoringSystems.PRESSURE)) {
             return;
         }
         int currentPressure = extinguishingSystem.getCurrentPressure();
@@ -47,13 +47,13 @@ public class ExtinguishingSystemMonitoring {
         }
     }
 
-    public void checkValveControlStatus(){
-        if (!currentUserIsAllowedToCheck(MonitoringSystems.VALVECONTROL)){
+    public void checkValveControlStatus() {
+        if (!currentUserIsAllowedToCheck(MonitoringSystems.VALVECONTROL)) {
             return;
         }
-        if(extinguishingSystem.getValveStatus() == ValveStatus.WORKING){
+        if (extinguishingSystem.getValveStatus() == ValveStatus.WORKING) {
             actions.add(Actions.SHOW_VALUE);
-        } else{
+        } else {
             actions.add(Actions.SHOW_ERROR);
         }
         actions.add(Actions.LOG_DATA);
@@ -61,8 +61,8 @@ public class ExtinguishingSystemMonitoring {
 
     private boolean currentUserIsAllowedToCheck(MonitoringSystems monitoredSystem) {
         var currentUser = extinguishingSystem.getCurrentUserGroup();
-        if (currentUser != UserGroups.WORKER){
-            if(currentUser == UserGroups.MAINTENANCE && monitoredSystem == MonitoringSystems.VALVECONTROL){
+        if (currentUser != UserGroups.WORKER) {
+            if (currentUser == UserGroups.MAINTENANCE && monitoredSystem == MonitoringSystems.VALVECONTROL) {
                 return false;
             }
             return true;
@@ -80,12 +80,11 @@ public class ExtinguishingSystemMonitoring {
         actions.clear();
     }
 
-    public ArrayList<Actions> checkCurrentVoltage() {
+    public void checkCurrentVoltage() {
         int currentVoltage = extinguishingSystem.getVoltage();
         if (currentVoltage < 5) {
             actions.add(Actions.ACOUSTIC_SIGNAL);
             actions.add(Actions.LOG_DATA);
         }
-        return actions;
     }
 }
