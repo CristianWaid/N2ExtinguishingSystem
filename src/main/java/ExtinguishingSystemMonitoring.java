@@ -8,14 +8,13 @@ public class ExtinguishingSystemMonitoring {
     MonitoringSystems monitoredSystem;
     UserGroups currentUser;
 
-    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem, UserGroups currentUser, MonitoringSystems monitoredSystem) {
+    public ExtinguishingSystemMonitoring(ExtinguishingSystem extinguishingSystem, UserGroups currentUser) {
         this.extinguishingSystem = extinguishingSystem;
         this.currentUser = currentUser;
-        this.monitoredSystem = monitoredSystem;
     }
 
     public void checkCurrentPressure() {
-        if (!currentUserIsAllowedToCheck()){
+        if (!currentUserIsAllowedToCheck(MonitoringSystems.PRESSURE)){
             return;
         }
         int currentPressure = extinguishingSystem.getCurrentPressure();
@@ -51,7 +50,7 @@ public class ExtinguishingSystemMonitoring {
         }
     }
 
-    private boolean currentUserIsAllowedToCheck() {
+    private boolean currentUserIsAllowedToCheck(MonitoringSystems monitoredSystem) {
         if (currentUser != UserGroups.WORKER){
             if(currentUser == UserGroups.MAINTENANCE && monitoredSystem == MonitoringSystems.VALVECONTROL){
                 return false;
