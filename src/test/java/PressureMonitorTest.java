@@ -1,6 +1,10 @@
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PressureMonitorTest {
@@ -10,9 +14,14 @@ public class PressureMonitorTest {
 
     @ParameterizedTest
     @ValueSource(ints = {49, 50, 51, 179, 180, 181, 219, 220, 221, 299, 300, 301, 499, 500, 501})
+    @DisplayName("Pressure Monitoring Test")
     void testPressureMonitoring(int pressure) {
         extinguishingSystem.setCurrentPressure(pressure);
-        extinguishingSystemMonitoring.checkCurrentPressure();
+
+        assertTimeout(Duration.ofMillis(10), () -> {
+            extinguishingSystemMonitoring.checkCurrentPressure();
+        });
+
         switch (pressure) {
             case 49:
                 assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.ACOUSTIC_SIGNAL) && extinguishingSystemMonitoring.actions.contains(Actions.NOTIFICATION_OPERATOR));
