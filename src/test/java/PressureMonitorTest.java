@@ -4,8 +4,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTimeout;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PressureMonitorTest {
 
@@ -18,9 +17,7 @@ public class PressureMonitorTest {
     void testPressureMonitoring(int pressure) {
         extinguishingSystem.setCurrentPressure(pressure);
 
-        assertTimeout(Duration.ofMillis(10), () -> {
-            extinguishingSystemMonitoring.checkCurrentPressure();
-        });
+        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkCurrentPressure());
 
         switch (pressure) {
             case 49:
@@ -50,8 +47,6 @@ public class PressureMonitorTest {
             case 501:
                 assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.TRIGGER_ALARM) && extinguishingSystemMonitoring.actions.contains(Actions.START_EVACUATION));
                 break;
-
-
         }
         extinguishingSystemMonitoring.clearActions();
     }

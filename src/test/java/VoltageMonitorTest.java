@@ -4,8 +4,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
 
-import static org.junit.jupiter.api.Assertions.assertTimeout;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class VoltageMonitorTest {
@@ -18,9 +17,7 @@ public class VoltageMonitorTest {
     void testVoltageMonitoring(int voltage) {
         extinguishingSystem.setVoltage(voltage);
 
-        assertTimeout(Duration.ofMillis(50), () -> {
-            extinguishingSystemMonitoring.checkCurrentVoltage();
-        });
+        assertTimeoutPreemptively(Duration.ofMillis(50), () -> extinguishingSystemMonitoring.checkCurrentVoltage());
 
         switch (voltage) {
             case 4:

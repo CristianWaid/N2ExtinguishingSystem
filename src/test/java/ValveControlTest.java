@@ -1,34 +1,47 @@
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ValveControlTest {
     ExtinguishingSystem extinguishingSystem = new ExtinguishingSystem(0, 6, UserGroups.MANAGER, ValveStatus.WORKING);
     ExtinguishingSystemMonitoring extinguishingSystemMonitoring = new ExtinguishingSystemMonitoring(extinguishingSystem);
 
+    @AfterEach
+    void cleanUpActions(){
+        extinguishingSystemMonitoring.clearActions();
+    }
+
     @Test
+    @DisplayName("Test 'working' status of Valve Control")
     void testValveControlStatusWorking() {
         extinguishingSystem.setCurrentUserGroup(UserGroups.MANAGER);
         extinguishingSystem.setValveStatus(ValveStatus.WORKING);
-        extinguishingSystemMonitoring.checkValveControlStatus();
+
+        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.SHOW_VALUE) && extinguishingSystemMonitoring.actions.contains(Actions.LOG_DATA));
-        extinguishingSystemMonitoring.clearActions();
     }
 
     @Test
+    @DisplayName("Test 'no response' status of Valve Control")
     void testValveControlStatusNoResponse() {
         extinguishingSystem.setCurrentUserGroup(UserGroups.MANAGER);
         extinguishingSystem.setValveStatus(ValveStatus.NO_RESPONSE);
-        extinguishingSystemMonitoring.checkValveControlStatus();
+
+        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.SHOW_ERROR) && extinguishingSystemMonitoring.actions.contains(Actions.LOG_DATA));
-        extinguishingSystemMonitoring.clearActions();
     }
 
     @Test
+    @DisplayName("Test status of Valve Control without access rights")
     void testValveControlStatusWithoutRights() {
         extinguishingSystem.setCurrentUserGroup(UserGroups.WORKER);
         extinguishingSystem.setValveStatus(ValveStatus.WORKING);
-        extinguishingSystemMonitoring.checkValveControlStatus();
+
+        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.isEmpty());
-        extinguishingSystemMonitoring.clearActions();
     }
 }
