@@ -21,7 +21,7 @@ public class ValveControlTest {
         extinguishingSystem.setCurrentUserGroup(UserGroups.MANAGER);
         extinguishingSystem.setValveStatus(ValveStatus.WORKING);
 
-        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
+        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.SHOW_VALUE) && extinguishingSystemMonitoring.actions.contains(Actions.LOG_DATA));
     }
 
@@ -31,7 +31,7 @@ public class ValveControlTest {
         extinguishingSystem.setCurrentUserGroup(UserGroups.MANAGER);
         extinguishingSystem.setValveStatus(ValveStatus.NO_RESPONSE);
 
-        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
+        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.contains(Actions.SHOW_ERROR) && extinguishingSystemMonitoring.actions.contains(Actions.LOG_DATA));
     }
 
@@ -41,7 +41,7 @@ public class ValveControlTest {
         extinguishingSystem.setCurrentUserGroup(UserGroups.WORKER);
         extinguishingSystem.setValveStatus(ValveStatus.WORKING);
 
-        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
+        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkValveControlStatus());
         assertTrue(extinguishingSystemMonitoring.actions.isEmpty());
     }
 }

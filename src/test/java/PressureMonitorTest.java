@@ -17,7 +17,7 @@ public class PressureMonitorTest {
     void testPressureMonitoring(int pressure) {
         extinguishingSystem.setCurrentPressure(pressure);
 
-        assertTimeoutPreemptively(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkCurrentPressure());
+        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkCurrentPressure());
 
         switch (pressure) {
             case 49:

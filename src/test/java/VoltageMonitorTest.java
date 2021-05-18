@@ -17,7 +17,7 @@ public class VoltageMonitorTest {
     void testVoltageMonitoring(int voltage) {
         extinguishingSystem.setVoltage(voltage);
 
-        assertTimeoutPreemptively(Duration.ofMillis(50), () -> extinguishingSystemMonitoring.checkCurrentVoltage());
+        assertTimeout(Duration.ofMillis(50), () -> extinguishingSystemMonitoring.checkCurrentVoltage());
 
         switch (voltage) {
             case 4:
