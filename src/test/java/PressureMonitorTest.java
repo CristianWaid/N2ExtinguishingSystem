@@ -7,17 +7,18 @@ import java.time.Duration;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PressureMonitorTest {
-
+    // initialize classes
     ExtinguishingSystem extinguishingSystem = new ExtinguishingSystem(0, 6, UserGroups.MANAGER, ValveStatus.WORKING);
     ExtinguishingSystemMonitoring extinguishingSystemMonitoring = new ExtinguishingSystemMonitoring(extinguishingSystem);
 
+    // test with multiple values
     @ParameterizedTest
     @ValueSource(ints = {49, 50, 51, 179, 180, 181, 219, 220, 221, 299, 300, 301, 499, 500, 501})
     @DisplayName("Pressure Monitoring Test")
     void testPressureMonitoring(int pressure) {
         extinguishingSystem.setCurrentPressure(pressure);
 
-        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkCurrentPressure());
+        assertTimeout(Duration.ofMillis(10), () -> extinguishingSystemMonitoring.checkCurrentPressure()); // abort if operation takes longer than 10ms
 
         switch (pressure) {
             case 49:

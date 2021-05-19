@@ -12,9 +12,12 @@ public class ExtinguishingSystemMonitoring {
     }
 
     public void checkCurrentPressure() {
+        // check for permission
         if (!currentUserIsAllowedToCheck(MonitoringSystems.PRESSURE)) {
             return;
         }
+
+        // check current pressure and take necessary actions
         int currentPressure = extinguishingSystem.getCurrentPressure();
         if (currentPressure < 50) {
             actions.add(Actions.ACOUSTIC_SIGNAL);
@@ -55,9 +58,11 @@ public class ExtinguishingSystemMonitoring {
     }
 
     public void checkValveControlStatus() {
+        // check for permission
         if (!currentUserIsAllowedToCheck(MonitoringSystems.VALVECONTROL)) {
             return;
         }
+
         if (extinguishingSystem.getValveStatus() == ValveStatus.WORKING) {
             actions.add(Actions.SHOW_VALUE);
         } else {
